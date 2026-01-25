@@ -1,0 +1,9 @@
+{
+  "name": "WhatsApp Clone AI",
+  "description": "A high-fidelity WhatsApp clone featuring real-time chat simulations, contact management, and integrated Meta AI assistant powered by Gemini.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
