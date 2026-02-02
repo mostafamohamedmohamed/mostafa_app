@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { AppTab, Chat, Message, User, WorkoutHistory } from './types';
 import { storageService } from './services/storageService';
@@ -29,7 +28,6 @@ const App: React.FC = () => {
     const user = storageService.getUser();
     setCurrentUser(user);
 
-    // Generate mock history for Dashboard
     const history: WorkoutHistory[] = [];
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
@@ -78,7 +76,6 @@ const App: React.FC = () => {
 
   const selectedChat = chats.find(c => c.id === selectedChatId);
 
-  // Meta AI Hub Overlay - Fully functional page triggered by header button
   if (showMetaAi) {
     return (
       <div className="max-w-md mx-auto h-screen relative flex flex-col bg-black overflow-hidden shadow-2xl">
@@ -87,7 +84,6 @@ const App: React.FC = () => {
     );
   }
 
-  // Stats View Overlay
   if (showStats && currentUser) {
     return (
       <div className="max-w-md mx-auto h-screen relative flex flex-col bg-slate-950 overflow-hidden shadow-2xl">
@@ -104,7 +100,6 @@ const App: React.FC = () => {
     );
   }
 
-  // Settings View Overlay
   if (showSettings && currentUser) {
     return (
       <div className="max-w-md mx-auto h-screen relative flex flex-col bg-white overflow-hidden shadow-2xl">
@@ -113,7 +108,6 @@ const App: React.FC = () => {
     );
   }
 
-  // Chat View Overlay
   if (selectedChat) {
     return (
       <div className="max-w-md mx-auto h-screen relative flex flex-col bg-white overflow-hidden shadow-2xl">
@@ -133,10 +127,7 @@ const App: React.FC = () => {
       case AppTab.CHATS:
         return (
           <div className="flex flex-col h-full pt-[60px] bg-white">
-            <ChatList 
-              chats={chats} 
-              onSelectChat={handleSelectChat} 
-            />
+            <ChatList chats={chats} onSelectChat={handleSelectChat} />
           </div>
         );
       case AppTab.COMMUNITIES:
@@ -159,9 +150,6 @@ const App: React.FC = () => {
             </div>
             <h3 className="text-lg font-bold text-gray-900">No recent calls</h3>
             <p className="text-sm">To start calling contacts who have WhatsApp, tap the plus icon at the bottom of your screen.</p>
-            <button className="fixed bottom-24 right-6 w-14 h-14 bg-[#25d366] rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg active:scale-90 hover:scale-105 transition-all">
-               <i className="fa-solid fa-phone-flip"></i>
-            </button>
           </div>
         );
       case AppTab.REELS:
@@ -183,7 +171,6 @@ const App: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto h-screen relative flex flex-col bg-white overflow-hidden shadow-2xl">
-      {/* Fixed Top Bar - Shared across all main tabs */}
       <div className="absolute top-0 w-full z-40">
         <Navigation 
           onMetaAiClick={() => setShowMetaAi(true)} 
@@ -196,7 +183,6 @@ const App: React.FC = () => {
         {renderTabContent()}
       </main>
       
-      {/* Bottom Navigation Bar */}
       <BottomNav 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 

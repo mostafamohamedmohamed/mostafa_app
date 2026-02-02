@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 
 interface NavigationProps {
@@ -11,7 +10,6 @@ const Navigation: React.FC<NavigationProps> = ({ onMetaAiClick, onOpenSettings, 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -38,7 +36,7 @@ const Navigation: React.FC<NavigationProps> = ({ onMetaAiClick, onOpenSettings, 
     <nav className="whatsapp-header border-none z-50 px-4 py-4 flex items-center justify-between shadow-md h-[60px] relative">
       <h1 className="text-xl font-medium text-white tracking-wide">Mostafa App</h1>
       <div className="flex items-center gap-6 text-white">
-        {/* Meta AI icon - Fully functional as per screenshot request */}
+        {/* Meta AI icon button */}
         <button 
           onClick={onMetaAiClick}
           className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center cursor-pointer hover:bg-white/25 transition-all active:scale-90"
@@ -61,7 +59,6 @@ const Navigation: React.FC<NavigationProps> = ({ onMetaAiClick, onOpenSettings, 
             <i className="fa-solid fa-ellipsis-vertical cursor-pointer text-lg opacity-90 hover:opacity-100 transition-opacity"></i>
           </button>
 
-          {/* Dropdown Menu - WhatsApp Style */}
           {isMenuOpen && (
             <div className="absolute top-10 right-0 w-52 bg-white rounded-lg shadow-2xl py-2 z-[70] animate-in fade-in zoom-in-95 duration-100 origin-top-right">
               {menuOptions.map((option, idx) => (

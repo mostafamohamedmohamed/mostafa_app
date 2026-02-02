@@ -8,6 +8,14 @@ interface SettingsViewProps {
 }
 
 const SettingsView: React.FC<SettingsViewProps> = ({ user, onBack }) => {
+  const handleSelectKey = async () => {
+    if (typeof (window as any).aistudio?.openSelectKey === 'function') {
+      await (window as any).aistudio.openSelectKey();
+    } else {
+      alert("Key selection is only available within the AI Studio environment.");
+    }
+  };
+
   const settingsOptions = [
     { icon: 'fa-key', title: 'Account', subtitle: 'Security notifications, change number', color: 'text-gray-500' },
     { icon: 'fa-lock', title: 'Privacy', subtitle: 'Block contacts, disappearing messages', color: 'text-gray-500' },
@@ -44,6 +52,27 @@ const SettingsView: React.FC<SettingsViewProps> = ({ user, onBack }) => {
             <h2 className="text-lg font-bold text-gray-900 truncate">{user.name}</h2>
             <p className="text-sm text-gray-500 truncate">{user.status || "At the gym 🏋️‍♂️"}</p>
           </div>
+        </div>
+
+        {/* AI Key Management Section */}
+        <div className="px-6 py-4 bg-blue-50/50 border-b border-blue-100">
+          <h3 className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">AI Engine Management</h3>
+          <button 
+            onClick={handleSelectKey}
+            className="w-full flex items-center gap-4 p-3 bg-white border border-blue-200 rounded-xl shadow-sm hover:bg-blue-50 transition-colors group"
+          >
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white">
+              <i className="fa-solid fa-microchip"></i>
+            </div>
+            <div className="text-left flex-1">
+              <h4 className="text-sm font-bold text-gray-900">Link AI Project Key</h4>
+              <p className="text-[10px] text-gray-500">Requires a paid GCP project with billing enabled</p>
+            </div>
+            <i className="fa-solid fa-chevron-right text-gray-300 group-hover:text-blue-600 transition-colors"></i>
+          </button>
+          <p className="mt-2 text-[10px] text-gray-400 leading-tight">
+            Learn more about <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">Gemini API billing</a>.
+          </p>
         </div>
 
         {/* Settings List */}

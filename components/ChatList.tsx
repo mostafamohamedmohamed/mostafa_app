@@ -1,56 +1,26 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Chat } from '../types';
 
 interface ChatListProps {
   chats: Chat[];
   onSelectChat: (chat: Chat) => void;
-  onOpenStats?: () => void;
-  onOpenSettings?: () => void;
 }
 
-const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, onOpenStats, onOpenSettings }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const menuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Find the Meta AI chat object
   const metaAiChat = chats.find(c => c.id === 'ai-meta');
-
-  // Filter chats based on search term
   const filteredChats = chats
     .filter(c => c.id !== 'ai-meta')
     .filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-    if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuOpen]);
-
-  // Focus search input when search mode is activated
   useEffect(() => {
     if (isSearching && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [isSearching]);
-
-  const handleMetaAiClick = () => {
-    if (metaAiChat) {
-      onSelectChat(metaAiChat);
-    }
-  };
 
   const toggleSearch = () => {
     setIsSearching(!isSearching);
@@ -61,7 +31,7 @@ const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, onOpenStats, o
 
   return (
     <div className="flex-1 flex flex-col bg-white relative overflow-hidden">
-      {/* Search Bar Overlay - Only visible when searching */}
+      {/* Search Bar Overlay */}
       {isSearching && (
         <div className="absolute top-0 left-0 w-full h-[60px] bg-[#008069] z-50 px-4 flex items-center gap-4 shadow-md animate-in slide-in-from-top duration-200">
           <button onClick={toggleSearch} className="text-white p-2">
@@ -85,6 +55,7 @@ const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, onOpenStats, o
 
       {/* Main Chat Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar whatsapp-bg">
+        {/* Archived Row */}
         <div className="flex items-center gap-6 px-5 py-4 cursor-pointer hover:bg-gray-50 border-b border-gray-100 transition-colors">
           <div className="flex-none text-[#008069] text-xl">
              <i className="fa-solid fa-box-archive"></i>
@@ -144,9 +115,8 @@ const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, onOpenStats, o
 
       {/* Floating Action Buttons */}
       <div className="fixed bottom-24 right-6 flex flex-col gap-4 z-20">
-        {/* Meta AI FAB */}
         <button 
-          onClick={handleMetaAiClick}
+          onClick={() => metaAiChat && onSelectChat(metaAiChat)}
           className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg border border-gray-100 active:scale-90 hover:scale-105 transition-all group overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-tr from-[#00d2ff] via-[#3a7bd5] to-[#fbc2eb] opacity-0 group-hover:opacity-10 transition-opacity"></div>
@@ -157,7 +127,6 @@ const ChatList: React.FC<ChatListProps> = ({ chats, onSelectChat, onOpenStats, o
           </div>
         </button>
 
-        {/* New Chat FAB */}
         <button className="w-14 h-14 bg-[#25d366] rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg active:scale-90 hover:scale-105 transition-all">
           <i className="fa-solid fa-comment-dots"></i>
         </button>
